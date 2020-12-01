@@ -14,7 +14,7 @@ class VolumeMixer(IObserver, Subject):
         self.applications = [None] * 5
         self.modified_index = 0
 
-    def update(self, subject: Subject, arg: object) -> None:
+    def update(self, subject, arg):
         for index, application in enumerate(self.applications):
             if application == subject:
                 self.modified_index = index
