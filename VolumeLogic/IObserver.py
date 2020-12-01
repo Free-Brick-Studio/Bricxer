@@ -3,6 +3,7 @@ from VolumeLogic import Subject
 
 
 class IObserver(metaclass=abc.ABCMeta):
+    """Creates interface for classes that need to be notified of a change."""
 
     @classmethod
     def __subclasshook__(cls, subclass):
@@ -12,5 +13,10 @@ class IObserver(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def update(self, subject: Subject, arg: object) -> None:
-        """Update the observer with new values from subject"""
+        """
+        Updates the observer with new values from subject.
+
+        :param subject: The object which notified of a change.
+        :param arg: value that was changed.
+        """
         raise NotImplementedError

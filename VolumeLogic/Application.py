@@ -2,6 +2,7 @@ from VolumeLogic import ChangedValue, Subject, VolumeCalculation
 
 
 class Application(Subject):
+    """Application on the computer which can play sound."""
 
     def __init__(self, name, volume):
         super().__init__()
