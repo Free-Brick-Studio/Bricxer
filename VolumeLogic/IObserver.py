@@ -8,8 +8,7 @@ class IObserver(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, subclass):
         return (hasattr(subclass, 'update') and
-                callable(subclass.update) or
-                NotImplemented)
+                callable(subclass.update))
 
     @abc.abstractmethod
     def update(self, subject: Subject, arg: object) -> None:
