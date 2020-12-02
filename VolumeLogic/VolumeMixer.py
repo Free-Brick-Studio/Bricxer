@@ -4,6 +4,7 @@ from VolumeLogic import ChangedValue, IObserver, Subject
 class VolumeMixer(IObserver, Subject):
     """Collection of Applications whose volume is being controlled."""
 
+    num_of_knobs = 5
     actions = {
         ChangedValue.VOLUME: lambda application, value: application.volume(value),
         ChangedValue.COLOR: lambda application, value: application.color_matrix(value),
@@ -11,7 +12,7 @@ class VolumeMixer(IObserver, Subject):
 
     def __init__(self):
         super().__init__()
-        self.applications = [None] * 5
+        self.applications = [None] * self.num_of_knobs
         self.modified_index = 0
 
     def update(self, subject, arg):
