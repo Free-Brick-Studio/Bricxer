@@ -9,9 +9,9 @@ class KeyCodeEnum(enum.Enum):
     """
     Enums to represent the keycodes to send to manipluate playing media
     """
-    PLAY_PAUSE = 0xB3
     SKIP = 0xB0
     PREV = 0xB1
+    PLAY_PAUSE = 0xB3
 
 
 class MediaController(object):
