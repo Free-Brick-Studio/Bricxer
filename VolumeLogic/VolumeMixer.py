@@ -15,13 +15,11 @@ class VolumeMixer(IObserver, Subject):
         self.os_connection = os_connection
         Application.os_connection = os_connection
         self.applications = [None] * self.num_of_knobs
-        self.modified_index = 0
 
     def update(self, subject, arg):
         for index, application in enumerate(self.applications):
             if application == subject:
-                self.modified_index = index
-                self.notify_all(arg)
+                self.notify_all((index, arg))
                 break
 
     @property
@@ -54,8 +52,7 @@ class VolumeMixer(IObserver, Subject):
         :param application: Application whose volume is being controlled.
         """
         self.applications[index] = application
-        self.modified_index = index
-        self.notify_all(ChangedValue.APPLICATION)
+        self.notify_all((index, ChangedValue.APPLICATION))
 
     def modify_application(self, index, action, value):
         """
