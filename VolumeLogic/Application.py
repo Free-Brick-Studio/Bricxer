@@ -1,11 +1,10 @@
 from VolumeLogic import ChangedValue, Subject, VolumeCalculation
-from SystemConnectors import IOsConnection
 
 
 class Application(Subject):
     """Application on the computer which can play sound."""
 
-    os_connection: IOsConnection
+    os_connection = None
 
     def __init__(self, name):
         super().__init__()
