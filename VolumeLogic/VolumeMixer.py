@@ -25,6 +25,28 @@ class VolumeMixer(IObserver, Subject):
                 self.notify_all(arg)
                 break
 
+    @property
+    def applications(self):
+        return self.applications
+
+    @applications.setter
+    def applications(self, applications):
+        self.applications = applications
+
+    def get_running_applications(self):
+        """
+        Gets all the applications currently running on the computer.
+
+        :return: List of applications from the computer.
+        """
+        applications = []
+
+        processes = self.os_connection.getRunningProcesses()
+        for process in processes:
+            applications.append(Application(process))
+
+        return applications
+
     def set_application(self, index, application):
         """
         Sets the application whose volume will be controlled by the knob in the indexed position.
