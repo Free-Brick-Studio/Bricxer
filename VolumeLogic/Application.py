@@ -1,13 +1,15 @@
 from VolumeLogic import ChangedValue, Subject, VolumeCalculation
+from SystemConnectors import IOsConnection
 
 
 class Application(Subject):
     """Application on the computer which can play sound."""
 
-    def __init__(self, name, volume):
+    os_connection: IOsConnection
+
+    def __init__(self, name):
         super().__init__()
         self.name = name
-        self.volume = volume
         self.color_matrix = [0, 0, 0]
 
     @property
@@ -20,11 +22,12 @@ class Application(Subject):
 
     @property
     def volume(self):
-        return self.volume
+        return self.os_connection.getProcessVolume(self.name)
 
     @volume.setter
     def volume(self, value):
-        self.volume = VolumeCalculation.convert_to_volume(self.volume, value)
+        volume = VolumeCalculation.convert_to_volume(self.volume, value)
+        self.os_connection.setProcessVolume(volume, self.name)
         self.notify_all(ChangedValue.VOLUME)
 
     @property

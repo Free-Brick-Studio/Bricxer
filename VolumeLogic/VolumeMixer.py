@@ -1,4 +1,5 @@
-from VolumeLogic import ChangedValue, IObserver, Subject
+from VolumeLogic import Application, ChangedValue, IObserver, Subject
+from SystemConnectors import IOsConnection
 
 
 class VolumeMixer(IObserver, Subject):
@@ -10,8 +11,10 @@ class VolumeMixer(IObserver, Subject):
         ChangedValue.COLOR: lambda application, value: application.color_matrix(value),
     }
 
-    def __init__(self):
+    def __init__(self, os_connection: IOsConnection):
         super().__init__()
+        self.os_connection = os_connection
+        Application.os_connection = os_connection
         self.applications = [None] * self.num_of_knobs
         self.modified_index = 0
 
