@@ -27,7 +27,7 @@ class IOsConnection(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def getProcessVolume(self, processName) -> int:
+    def getProcessVolume(self, processName: str) -> int:
         """
         Get the process level volume
 
@@ -36,7 +36,7 @@ class IOsConnection(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def setSystemVolume(self, newVolume) -> None:
+    def setSystemVolume(self, newVolume: int) -> None:
         """
         Set the system level volume
 
@@ -45,7 +45,7 @@ class IOsConnection(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def setProcessVolume(self, newVolume, processName) -> None:
+    def setProcessVolume(self, newVolume: int, processName: str) -> None:
         """
         Set the process volume
 
