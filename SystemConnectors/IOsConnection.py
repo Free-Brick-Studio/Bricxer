@@ -24,14 +24,16 @@ class IOsConnection(metaclass=abc.ABCMeta):
         """
         Get the system level volume
         """
-        return NotImplementedError
+        raise NotImplementedError
 
     @abc.abstractmethod
-    def getProcessVolume(self) -> int:
+    def getProcessVolume(self, processName) -> int:
         """
         Get the process level volume
+
+        :param processName: The process to set the volume for.
         """
-        return NotImplementedError
+        raise NotImplementedError
 
     @abc.abstractmethod
     def setSystemVolume(self, newVolume) -> None:
@@ -40,24 +42,24 @@ class IOsConnection(metaclass=abc.ABCMeta):
 
         :param newVolume: The volume to set it to.
         """
-        return NotImplementedError
+        raise NotImplementedError
 
     @abc.abstractmethod
-    def setProcessVolume(self, newVolume, process) -> None:
+    def setProcessVolume(self, newVolume, processName) -> None:
         """
         Set the process volume
 
         :param newVolume: The volume to set it to.
-        :param process: The process to set the volume for.
+        :param processName: The process to set the volume for.
         """
-        return NotImplementedError
+        raise NotImplementedError
 
     @abc.abstractmethod
     def getRunningProcesses(self) -> list:
         """
         Get the names of the processes currently running
         """
-        return NotImplementedError
+        raise NotImplementedError
 
     @abc.abstractmethod
     def play_pause(self) -> None:
@@ -66,21 +68,21 @@ class IOsConnection(metaclass=abc.ABCMeta):
 
         Playing state held by OS so we don't need to
         """
-        return NotImplementedError
+        raise NotImplementedError
 
     @abc.abstractmethod
     def skip(self) -> None:
         """
         Skip to the next media track
         """
-        return NotImplementedError
+        raise NotImplementedError
 
     @abc.abstractmethod
     def reverse(self) -> None:
         """
         Play the previous media track
         """
-        return NotImplementedError
+        raise NotImplementedError
 
     @abc.abstractmethod
     def update(self, subject: Subject, arg: object) -> None:
