@@ -2,7 +2,7 @@ class Subject:
     """Object which notifies observers when modified."""
 
     def __init__(self):
-        self.observers = []
+        self._observers = []
 
     def attach(self, observer):
         """
@@ -10,7 +10,7 @@ class Subject:
 
         :param observer: Object which should be notified when this object changes.
         """
-        self.observers.append(observer)
+        self._observers.append(observer)
 
     def notify_all(self, arg):
         """
@@ -18,5 +18,5 @@ class Subject:
 
         :param arg: Object to tell observers which value has been modified.
         """
-        for observer in self.observers:
+        for observer in self._observers:
             observer.update(self, arg)
