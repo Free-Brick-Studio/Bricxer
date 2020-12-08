@@ -13,20 +13,20 @@ class WindowsConnector(IOsConnection):
         self.ProcessController = ProcessController()
         self.MediaController = MediaController()
 
-    def getSystemVolume(self):
-        return self.VolumeMixer.getSystemVolume()
+    def get_system_volume(self):
+        return self.VolumeMixer.get_system_volume()
 
-    def getProcessVolume(self, processName):
-        return self.VolumeMixer.getProcessVolume(processName)
+    def get_process_volume(self, process_name):
+        return self.VolumeMixer.get_process_volume(process_name)
 
-    def setSystemVolume(self, newVolume):
-        return self.VolumeMixer.setSystemVolume(newVolume)
+    def set_system_volume(self, new_volume):
+        return self.VolumeMixer.set_system_volume(new_volume)
 
-    def setProcessVolume(self, newVolume, processName):
-        return self.VolumeMixer.setProcessVolume(processName, newVolume)
+    def set_process_volume(self, new_volume, process_name):
+        return self.VolumeMixer.setProcessVolume(process_name, new_volume)
 
-    def getRunningProcesses(self):
-        return self.ProcessController.getRunningProcesses()
+    def get_running_processes(self):
+        return self.ProcessController.get_running_processes()
 
     def play_pause(self):
         return self.MediaController.play_pause()
@@ -36,13 +36,3 @@ class WindowsConnector(IOsConnection):
 
     def reverse(self):
         return self.MediaController.previous()
-
-    def update(self, subject, arg):
-        if (arg != ChangedValue.VOLUME):
-            return
-
-        application = subject.applications[subject.modified_index]
-        if application.name == "System":
-            self.setSystemVolume(application.volume)
-        else:
-            self.setProcessVolume(application.volume, application.name)

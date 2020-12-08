@@ -7,7 +7,7 @@ from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
 
 class VolumeMixer(object):
-    def getSystemVolume(self):
+    def get_system_volume(self):
         """
         Get the current volume of the system
         """
@@ -16,7 +16,7 @@ class VolumeMixer(object):
         volume = cast(interface, POINTER(IAudioEndpointVolume))
         return volume.GetMasterVolumeLevel()
 
-    def getProcessVolume(self, processName):
+    def get_process_volume(self, process_name):
         """
         Get the current volume of the process
 
@@ -24,12 +24,12 @@ class VolumeMixer(object):
         """
         sessions = AudioUtilities.GetAllSessions()
         for session in sessions:
-            if session.Process and session.Process.name() == processName:
+            if session.Process and session.Process.name() == process_name:
                 mixer = session.SimpleAudioVolume
                 return mixer.GetMasterVolume()
         return 0
     
-    def setSystemVolume(self, volume):
+    def set_system_volume(self, volume):
         """
         Set the system volume
 
@@ -40,7 +40,7 @@ class VolumeMixer(object):
         volume = cast(interface, POINTER(IAudioEndpointVolume))
         volume.SetMasterVolumeLevel(volume, None)
 
-    def setProcessVolume(self, processName, volume):
+    def set_process_volume(self, process_name, volume):
         """
         Get the current volume of the process
 
@@ -49,6 +49,8 @@ class VolumeMixer(object):
         """
         sessions = AudioUtilities.GetAllSessions()
         for session in sessions:
-            if session.Process and session.Process.name() == processName:
+            if session.Process and session.Process.name() == process_name:
                 mixer = session.SimpleAudioVolume
                 mixer.SetMasterVolume(volume)
+                return True
+        return False
