@@ -6,7 +6,7 @@ from pycaw.pycaw import AudioUtilities
 
 class ProcessController(): 
 
-    def getRunningProcesses(self):
+    def get_running_processes(self):
         """
         Get the currently running process names which can be controlled by pycaw
         """
