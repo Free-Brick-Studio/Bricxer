@@ -52,5 +52,3 @@ class VolumeMixer(object):
             if session.Process and session.Process.name() == process_name:
                 mixer = session.SimpleAudioVolume
                 mixer.SetMasterVolume(volume)
-                return True
-        return False

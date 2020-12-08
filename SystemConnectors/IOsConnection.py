@@ -2,7 +2,6 @@
 Interface for OS Connections to implement
 """
 import abc
-from VolumeLogic import Subject
 
 
 class IOsConnection(metaclass=abc.ABCMeta):
