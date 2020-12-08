@@ -1,4 +1,4 @@
-from VolumeLogic import ChangedValue, IObserver, Subject
+from VolumeLogic import Application, ChangedValue, IObserver, Subject
 
 
 class VolumeMixer(IObserver, Subject):
@@ -10,17 +10,39 @@ class VolumeMixer(IObserver, Subject):
         ChangedValue.COLOR: lambda application, value: application.color_matrix(value),
     }
 
-    def __init__(self):
+    def __init__(self, os_connection):
         super().__init__()
+        self.os_connection = os_connection
+        Application.os_connection = os_connection
         self.applications = [None] * self.num_of_knobs
-        self.modified_index = 0
 
     def update(self, subject, arg):
         for index, application in enumerate(self.applications):
             if application == subject:
-                self.modified_index = index
-                self.notify_all(arg)
+                self.notify_all((index, arg))
                 break
+
+    @property
+    def applications(self):
+        return self.applications
+
+    @applications.setter
+    def applications(self, applications):
+        self.applications = applications
+
+    def get_running_applications(self):
+        """
+        Gets all the applications currently running on the computer.
+
+        :return: List of applications from the computer.
+        """
+        applications = []
+
+        processes = self.os_connection.getRunningProcesses()
+        for process in processes:
+            applications.append(Application(process))
+
+        return applications
 
     def set_application(self, index, application):
         """
@@ -30,8 +52,7 @@ class VolumeMixer(IObserver, Subject):
         :param application: Application whose volume is being controlled.
         """
         self.applications[index] = application
-        self.modified_index = index
-        self.notify_all(ChangedValue.APPLICATION)
+        self.notify_all((index, ChangedValue.APPLICATION))
 
     def modify_application(self, index, action, value):
         """
