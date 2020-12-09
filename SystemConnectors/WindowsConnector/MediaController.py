@@ -19,7 +19,7 @@ class MediaController(object):
     Keycodes to send to the operating system for corresponding action
     """
     
-    def sendKeyPress(self, keycode):
+    def send_key_press(self, keycode):
         """
         Helper function to send the key press to Windows
         """
@@ -30,16 +30,16 @@ class MediaController(object):
         """
         Send the Play / Pause keycode
         """
-        self.sendKeyPress(KeyCodeEnum.PLAY_PAUSE)
+        self.send_key_press(KeyCodeEnum.PLAY_PAUSE)
 
     def skip(self):
         """
         Send the Skip keycode
         """
-        self.sendKeyPress(KeyCodeEnum.SKIP)
+        self.send_key_press(KeyCodeEnum.SKIP)
 
     def previous(self):
         """
         Send the Previous keycode
         """
-        self.sendKeyPress(KeyCodeEnum.PREV)
+        self.send_key_press(KeyCodeEnum.PREV)

@@ -2,32 +2,30 @@
 Interface for OS Connections to implement
 """
 import abc
-from VolumeLogic import Subject
 
 
 class IOsConnection(metaclass=abc.ABCMeta):
     @classmethod
     def __subclasshook__(cls, subclass):
         return \
-            (hasattr(subclass, 'getSystemVolume') and callable(subclass.getSystemVolume)) and \
-            (hasattr(subclass, 'getProcessVolume') and callable(subclass.getProcessVolume)) and \
-            (hasattr(subclass, 'setSystemVolume') and callable(subclass.setSystemVolume)) and \
-            (hasattr(subclass, 'setProcessVolume') and callable(subclass.setProcessVolume)) and \
-            (hasattr(subclass, 'getRunningProcesses') and callable(subclass.getRunningProcesses)) and \
+            (hasattr(subclass, 'get_system_volume') and callable(subclass.get_system_volume)) and \
+            (hasattr(subclass, 'get_process_volume') and callable(subclass.get_process_volume)) and \
+            (hasattr(subclass, 'set_system_volume') and callable(subclass.set_system_volume)) and \
+            (hasattr(subclass, 'set_process_volume') and callable(subclass.set_process_volume)) and \
+            (hasattr(subclass, 'get_running_processes') and callable(subclass.get_running_processes)) and \
             (hasattr(subclass, 'play_pause') and callable(subclass.play_pause)) and \
             (hasattr(subclass, 'skip') and callable(subclass.skip)) and \
-            (hasattr(subclass, 'reverse') and callable(subclass.reverse)) and \
-            (hasattr(subclass, 'update') and callable(subclass.update))
+            (hasattr(subclass, 'reverse') and callable(subclass.reverse))
 
     @abc.abstractmethod
-    def getSystemVolume(self) -> int:
+    def get_system_volume(self) -> int:
         """
         Get the system level volume
         """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def getProcessVolume(self, processName: str) -> int:
+    def get_process_volume(self, processName: str) -> int:
         """
         Get the process level volume
 
@@ -36,7 +34,7 @@ class IOsConnection(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def setSystemVolume(self, newVolume: int) -> None:
+    def set_system_volume(self, newVolume: int) -> None:
         """
         Set the system level volume
 
@@ -45,7 +43,7 @@ class IOsConnection(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def setProcessVolume(self, newVolume: int, processName: str) -> None:
+    def set_process_volume(self, newVolume: int, processName: str) -> None:
         """
         Set the process volume
 
@@ -55,7 +53,7 @@ class IOsConnection(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def getRunningProcesses(self) -> list:
+    def get_running_processes(self) -> list:
         """
         Get the names of the processes currently running
         """
@@ -81,15 +79,5 @@ class IOsConnection(metaclass=abc.ABCMeta):
     def reverse(self) -> None:
         """
         Play the previous media track
-        """
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def update(self, subject: Subject, arg: object) -> None:
-        """
-        Updates the observer with new values from subject.
-
-        :param subject: The object which notified of a change.
-        :param arg: value that was changed.
         """
         raise NotImplementedError
