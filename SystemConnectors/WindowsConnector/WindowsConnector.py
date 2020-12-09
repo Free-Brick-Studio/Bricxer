@@ -1,6 +1,5 @@
 from SystemConnectors import IOsConnection
-from WindowsConnector import VolumeMixer, ProcessController, MediaController
-from VolumeLogic import ChangedValue
+from . import VolumeMixer, ProcessController, MediaController
 
 
 class WindowsConnector(IOsConnection):
