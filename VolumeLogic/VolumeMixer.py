@@ -38,7 +38,7 @@ class VolumeMixer(IObserver, Subject):
         """
         applications = []
 
-        processes = self._os_connection.getRunningProcesses()
+        processes = self._os_connection.get_running_processes()
         for process in processes:
             applications.append(Application(process))
 

@@ -21,12 +21,12 @@ class Application(Subject):
 
     @property
     def volume(self):
-        return self.os_connection.getProcessVolume(self.name)
+        return self.os_connection.get_process_volume(self.name)
 
     @volume.setter
     def volume(self, value):
         volume = VolumeCalculation.convert_to_volume(self.volume, value)
-        self.os_connection.setProcessVolume(volume, self.name)
+        self.os_connection.set_process_volume(volume, self.name)
         self.notify_all(ChangedValue.VOLUME)
 
     @property
