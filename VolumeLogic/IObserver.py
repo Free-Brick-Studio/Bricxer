@@ -1,5 +1,5 @@
 import abc
-from VolumeLogic import Subject
+from . import Subject
 
 
 class IObserver(metaclass=abc.ABCMeta):

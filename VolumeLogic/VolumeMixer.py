@@ -1,4 +1,4 @@
-from VolumeLogic import Application, ChangedValue, IObserver, Subject
+from . import Application, ChangedValue, IObserver, Subject
 
 
 class VolumeMixer(IObserver, Subject):

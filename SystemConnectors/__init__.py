@@ -1,1 +1,1 @@
-from SystemConnectors.IOsConnection import IOsConnection
+from .IOsConnection import IOsConnection

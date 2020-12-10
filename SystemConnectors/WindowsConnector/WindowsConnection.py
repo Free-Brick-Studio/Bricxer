@@ -1,6 +1,5 @@
-from SystemConnectors import IOsConnection
-from WindowsConnector import VolumeMixer, ProcessController, MediaController
-from VolumeLogic import ChangedValue
+from .. import IOsConnection
+from . import VolumeMixer, ProcessController, MediaController
 
 
 class WindowsConnection(IOsConnection):
@@ -23,7 +22,7 @@ class WindowsConnection(IOsConnection):
         return self.volume_mixer.set_system_volume(new_volume)
 
     def set_process_volume(self, new_volume, process_name):
-        return self.volume_mixer.setProcessVolume(process_name, new_volume)
+        return self.volume_mixer.set_process_volume(process_name, new_volume)
 
     def get_running_processes(self):
         return self.process_controller.get_running_processes()
