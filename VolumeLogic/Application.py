@@ -1,4 +1,5 @@
-from VolumeLogic import ChangedValue, Subject, VolumeCalculation
+from VolumeLogic import ChangedValue, VolumeCalculation
+from VolumeLogic.Subject import Subject
 
 
 class Application(Subject):
