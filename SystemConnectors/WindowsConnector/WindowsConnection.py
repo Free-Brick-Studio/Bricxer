@@ -3,7 +3,7 @@ from WindowsConnector import VolumeMixer, ProcessController, MediaController
 from VolumeLogic import ChangedValue
 
 
-class WindowsConnector(IOsConnection):
+class WindowsConnection(IOsConnection):
     """
     OS Connection for Windows
     """
