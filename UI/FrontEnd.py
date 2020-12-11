@@ -1,7 +1,7 @@
 from tkinter import Frame, Label, Button, OptionMenu, Tk, StringVar, RAISED
 from tkinter.colorchooser import askcolor
 from VolumeLogic import ChangedValue, VolumeMixer
-from SystemConnectors.WindowsConnector import WindowsConnector
+from SystemConnectors import WindowsConnection
 # import tkinter
 # print(tkinter.__file__)
 
@@ -20,8 +20,8 @@ class FrontEnd():
         return color
 
     def getApps(self):
-        openApps = self.volMixer.getApps()
-        return openApps
+        openApps = self.volMixer.get_running_applications()
+        return [app.name[0: -4] for app in openApps]
 
     def updateApp(self,knob, app):
         print(self, knob, app)
@@ -34,22 +34,26 @@ class FrontEnd():
         root = Tk()
         root.title("Bricxer")
         mainframe = Frame(root, bg='Purple')
+        mainframe.grid(row=0, column=0, padx=10, pady=5)
         knobs = self.volMixer.applications
         knob = 0
-        for knob in range(knobs):
+        for knob in range(len(knobs)):
             Label(mainframe, text=knob, relief=RAISED)\
                 .grid(row=1, column=knob, padx=5, pady=5)
-            Button(mainframe, text='Color', bg='grey', command= lambda knob: self.open_color_dialog(knob))\
+
+            Button(mainframe, text='Color', bg='grey', command= lambda : self.open_color_dialog(knob))\
                 .grid(row=3, column=knob)
             options = StringVar(root)
             
             OptionMenu(mainframe, options, command= lambda knob: self.updateApp(self, knob), *self.getApps())\
                 .grid(row=0, column=knob, padx=5 , pady=5)
+        root.mainloop()
 
 
 if __name__ == '__main__':
-    os_connection = WindowsConnector()
+    os_connection = WindowsConnection()
     volume_mixer = VolumeMixer(os_connection)
     f = FrontEnd(volume_mixer)
     print("why are you starting this?")
+    f.ui_or_somethign()
     
