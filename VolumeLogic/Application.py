@@ -1,5 +1,6 @@
-from . import ChangedValue, VolumeCalculation
+from .ChangedValue import ChangedValue
 from .Subject import Subject
+from .VolumeCalculation import VolumeCalculation
 
 
 class Application(Subject):

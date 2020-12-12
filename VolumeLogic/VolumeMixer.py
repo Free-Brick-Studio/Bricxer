@@ -1,4 +1,7 @@
-from . import Application, ChangedValue, IObserver, Subject
+from .Application import Application
+from .ChangedValue import ChangedValue
+from .IObserver import IObserver
+from .Subject import Subject
 
 
 class VolumeMixer(IObserver, Subject):
