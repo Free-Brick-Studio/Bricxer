@@ -6,6 +6,10 @@ KnobControl::KnobControl(int knobPinA, int knobPinB, int buttonPin) {
     this->knobPinA = knobPinA;
     this->knobPinB = knobPinB;
     this->buttonPin = buttonPin;
+
+    pinMode(this->knobPinA, INPUT);
+    pinMode(this->knobPinB, INPUT);
+    pinMode(this->buttonPin, INPUT);
 }
 
 int* KnobControl::readKnobValues() {

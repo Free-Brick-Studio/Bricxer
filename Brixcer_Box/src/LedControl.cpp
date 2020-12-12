@@ -1,8 +1,11 @@
+#include <Arduino.h>
 #include "LedControl.h"
 
 
 LedControl::LedControl(int ledPin) {
     this->ledPin = ledPin;
+
+    pinMode(this->ledPin, OUTPUT);
 }
 
 void LedControl::setVolume(int volume) {
