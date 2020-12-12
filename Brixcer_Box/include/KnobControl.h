@@ -1,10 +1,13 @@
 class KnobControl {
 
-    int knobPin;
+    static const int KNOBINPUTS = 2;
+
+    int knobPinA;
+    int knobPinB;
     int buttonPin;
 
     public:
-        KnobControl(int knobPin, int buttonPin);
-        int readKnobValue();
+        KnobControl(int knobPinA, int knobPinB, int buttonPin);
+        int* readKnobValues();
         int readButtonValue();
 };
