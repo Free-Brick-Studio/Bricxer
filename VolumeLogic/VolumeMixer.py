@@ -6,8 +6,8 @@ class VolumeMixer(IObserver, Subject):
 
     _num_of_knobs = 5
     _actions = {
-        ChangedValue.VOLUME: lambda application, value: application.volume(value),
-        ChangedValue.COLOR: lambda application, value: application.color_matrix(value),
+        ChangedValue.VOLUME: lambda application, value: setattr(application, "volume", value),
+        ChangedValue.COLOR: lambda application, value: setattr(application, "color_matrix", value),
     }
 
     def __init__(self, os_connection):
