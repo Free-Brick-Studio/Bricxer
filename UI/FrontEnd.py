@@ -12,7 +12,7 @@ class FrontEnd:
         """
         Initializes FrontEnd
 
-        :param _volume_mixer: Volume Mixer used to communicate with rest of application
+        :param volume_mixer: Volume Mixer used to communicate with rest of application
         """
         self._volume_mixer = volume_mixer
 
@@ -56,14 +56,12 @@ class FrontEnd:
                 command=partial(self.open_color_dialog, index)) \
                 .grid(row=3, column=index)
             
-            Label(main_frame, text=index)\
+            Label(main_frame, text=index) \
                 .grid(row=1, column=index, padx=5, pady=5)
 
             option = StringVar(root)
-            if(app==None):
-                option.set("None Set")
-            else:
-                option.set(app.name)
+            option.set("None Set") if app==None else option.set(app.name)
+                
 
             OptionMenu(main_frame, option, 
                 command=partial(self.update_app, index), *self.get_apps()) \
