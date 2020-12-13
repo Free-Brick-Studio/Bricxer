@@ -15,7 +15,6 @@ class ProcessController:
         for session in sessions:
             if session.Process and session.Process.name():
                 name = session.Process.name()
-                if session.Process.name.contains("."):
-                    name = name[0:name.rindex(".")]
-                process_names.append(name)
+                cleanName = name[0:name.rfind(".")]
+                process_names.append(cleanName != -1 if cleanName else name)
         return process_names
