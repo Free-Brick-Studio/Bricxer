@@ -12,7 +12,7 @@ class FrontEnd:
         """
         Initializes FrontEnd
 
-        :param volume_mixer: VolumeMixer used to communicate with rest of application
+        :param volume_mixer: VolumeMixer used to communicate with rest of the application
         """
         self._volume_mixer = volume_mixer
 
@@ -35,7 +35,7 @@ class FrontEnd:
     
     def update_app(self, knob, app_name):
         """
-        Sends app seleced from dropdown to volume mixer, tied with knob
+        Sends app selected from dropdown to volume mixer, tied with knob
 
         :param knob Knob number 
         :param app_name: name of selected app
