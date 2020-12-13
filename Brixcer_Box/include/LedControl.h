@@ -1,5 +1,6 @@
 class LedControl {
 
+    // Length of array specifying RGB values
     static const int COLORS = 3;
 
     int ledPin;
