@@ -12,13 +12,13 @@ class FrontEnd:
         """
         Initializes FrontEnd
 
-        :param volume_mixer: Volume Mixer used to communicate with rest of application
+        :param volume_mixer: VolumeMixer used to communicate with rest of application
         """
         self._volume_mixer = volume_mixer
 
     def open_color_dialog(self, knob):
         """
-        Opens color picker and passes selected color to Volume Mixer
+        Opens color picker and passes selected color to volume mixer
 
         :param knob: Knob number
         """
@@ -29,13 +29,13 @@ class FrontEnd:
         """
         Gets apps for dropdown, occurs every time dropdown is opened
 
-        :return: list of app names with last 4 characters removed
+        :return: list of app names
         """
         return self._volume_mixer.get_running_applications()
     
     def update_app(self, knob, app_name):
         """
-        Sends app seleced from dropdown to volumemixer, tied with knob
+        Sends app seleced from dropdown to volume mixer, tied with knob
 
         :param knob Knob number 
         :param app_name: name of selected app
@@ -60,7 +60,7 @@ class FrontEnd:
                 .grid(row=1, column=index, padx=5, pady=5)
 
             option = StringVar(root)
-            option.set("None Set") if app==None else option.set(app.name)
+            option.set("None Set") if app is None else option.set(app.name)
                 
 
             OptionMenu(main_frame, option, 
