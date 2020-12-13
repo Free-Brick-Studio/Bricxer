@@ -15,6 +15,8 @@ class ProcessController:
         for session in sessions:
             if session.Process and session.Process.name():
                 name = session.Process.name()
-                cleanName = name[0:name.rfind(".")]
-                process_names.append(cleanName != -1 if cleanName else name)
+                lastDot = name.rfind(".")
+                if lastDot != -1:
+                    cleanName = name[0:lastDot]
+                process_names.append(lastDot != -1 if cleanName else name)
         return process_names
