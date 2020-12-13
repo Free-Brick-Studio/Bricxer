@@ -2,3 +2,6 @@
 .vscode
 .vs
 .idea
+
+# Framework folders
+.pio
