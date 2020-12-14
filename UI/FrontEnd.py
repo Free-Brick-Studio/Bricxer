@@ -68,7 +68,3 @@ class FrontEnd:
                 .grid(row=0, column=index, padx=5 , pady=5)
         root.mainloop()
     
-if __name__ == '__main__':
-    os_connection = WindowsConnection()
-    volume_mixer = VolumeMixer(os_connection)
-    FrontEnd(volume_mixer).launch()
