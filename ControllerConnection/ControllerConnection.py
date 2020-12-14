@@ -17,7 +17,6 @@ class ControllerConnection():
         self.serial.open()
         self.serial.write(payload)
         self.serial.close()
-        pass
 
     def receive_from_controller(self):
         controllerMsg = self.serial.readline()
