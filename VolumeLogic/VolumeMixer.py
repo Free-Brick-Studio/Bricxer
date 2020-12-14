@@ -49,6 +49,7 @@ class VolumeMixer(IObserver, Subject):
         :param name: Name of the application whose volume is being controlled.
         """
         self._applications[index] = Application(name)
+        self._applications[index].attach(self)
         self.notify_all((index, ChangedValue.APPLICATION))
 
     def modify_application(self, index, action, value):

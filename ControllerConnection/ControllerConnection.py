@@ -1,5 +1,6 @@
 import serial, serial.tools.list_ports
-from ControllerReceiver import ControllerReceiver
+import time
+from .ControllerReceiver import ControllerReceiver
 from VolumeLogic import VolumeMixer, ChangedValue
 
 
@@ -17,17 +18,16 @@ class ControllerConnection():
         self.volumeMixer = volumeMixer
         # TODO: Figure out how to set the port dynamically.
         self.serial = serial.Serial('COM4', 9600)
-        ControllerReceiver(self)
+        ControllerReceiver(self).start()
 
     def send_to_controller(self, control, action, value):
-        payload = str(control) + "." + action + "." + str(value)
+        payload = str(control) + "." + str(action) + "." + str(value)
         self.serial.write(payload.encode())
 
     def receive_from_controller(self):
         controllerMsg = self.serial.readline()
         data = controllerMsg.decode("utf-8").split(".")
-        print(data)
-        # self.volumeMixer.modify_application(data[0], data[1], data[2])
+        self.volumeMixer.modify_application(data[0], data[1], data[2])
 
     def connectionAlive(self):
         comPorts = [tuple(p) for p in list(serial.tools.list_ports.comports())]
@@ -37,5 +37,10 @@ class ControllerConnection():
         return False
 
     def update(self, subject, arg):
+        # TODO: Send both volume and color
+        if arg[1] == ChangedValue.APPLICATION:
+            self._actions[ChangedValue.VOLUME](subject, arg[0])
+            self._actions[ChangedValue.COLOR](subject, arg[0])
+            return
         updated = self._actions[arg[1]](subject, arg[0])
         self.send_to_controller(arg[0], arg[1], updated)
