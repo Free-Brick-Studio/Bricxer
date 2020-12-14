@@ -1,4 +1,7 @@
-from . import Application, ChangedValue, IObserver, Subject
+from .Application import Application
+from .ChangedValue import ChangedValue
+from .IObserver import IObserver
+from .Subject import Subject
 
 
 class VolumeMixer(IObserver, Subject):
@@ -6,8 +9,8 @@ class VolumeMixer(IObserver, Subject):
 
     _num_of_knobs = 5
     _actions = {
-        ChangedValue.VOLUME: lambda application, value: application.volume(value),
-        ChangedValue.COLOR: lambda application, value: application.color_matrix(value),
+        ChangedValue.VOLUME: lambda application, value: setattr(application, "volume", value),
+        ChangedValue.COLOR: lambda application, value: setattr(application, "color_matrix", value),
     }
 
     def __init__(self, os_connection):
@@ -32,26 +35,20 @@ class VolumeMixer(IObserver, Subject):
 
     def get_running_applications(self):
         """
-        Gets all the applications currently running on the computer.
+        Gets the names of all the applications currently running on the computer.
 
-        :return: List of applications from the computer.
+        :return: List of names of the applications from the computer.
         """
-        applications = []
+        return self._os_connection.get_running_processes()
 
-        processes = self._os_connection.get_running_processes()
-        for process in processes:
-            applications.append(Application(process))
-
-        return applications
-
-    def set_application(self, index, application):
+    def set_application(self, index: int, name):
         """
         Sets the application whose volume will be controlled by the knob in the indexed position.
 
         :param index: Relation to which knob will control the volume of the application.
-        :param application: Application whose volume is being controlled.
+        :param name: Name of the application whose volume is being controlled.
         """
-        self._applications[index] = application
+        self._applications[index] = Application(name)
         self.notify_all((index, ChangedValue.APPLICATION))
 
     def modify_application(self, index, action, value):
