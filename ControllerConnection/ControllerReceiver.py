@@ -1,4 +1,3 @@
-from ControllerConnection import ControllerConnection
 
 
 class ControllerReceiver():
@@ -8,7 +7,3 @@ class ControllerReceiver():
     def loop(self):
         while self.connection.connectionAlive():
             self.connection.receive_from_controller()
-
-
-if __name__ == "__main__":
-    pass

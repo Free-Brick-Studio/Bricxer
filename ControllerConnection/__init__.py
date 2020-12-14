@@ -1,2 +1,1 @@
 from ControllerConnection.ControllerConnection import ControllerConnection
-from ControllerConnection.ControllerReceiver import ControllerReceiver
