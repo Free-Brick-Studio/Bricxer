@@ -1,7 +1,6 @@
 from VolumeLogic import ChangedValue, VolumeMixer
 from SystemConnectors import WindowsConnection
 from UI import FrontEnd
-from sys import argv
 
 if __name__ == '__main__':
     """
