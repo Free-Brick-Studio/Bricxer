@@ -32,6 +32,8 @@
 
 #define KnobCount 5
 
+#define LEDPIN 13
+
 // Define controls for the box
 KnobControl knobs[KnobCount];
 LedControl leds[KnobCount];
@@ -40,7 +42,9 @@ MediaControl mediaControl(PlayPause, Previous, Next);
 
 void setup() {
     // Turn on the serial monitor
-    Serial.begin(9600);
+    //Serial.begin(9600);
+
+    pinMode(LEDPIN, OUTPUT);
 
     int knobPins[] = {Knob1OutA, Knob1OutB, Knob2OutA, Knob2OutB, Knob3OutA, Knob3OutB, Knob4OutA, Knob4OutB, Knob5OutA, Knob5OutB};
     int buttonPins[] = {Button1, Button2, Button3, Button4, Button5};
@@ -56,7 +60,11 @@ void setup() {
 }
  
 void loop() {
-
+    //Serial.printLn("0.Value.");
+    digitalWrite(LEDPIN, HIGH);
+    delay(1000);
+    digitalWrite(LEDPIN, LOW);
+    delay(1000);
 }
 
 void sendData(int control, int action, int value) {
