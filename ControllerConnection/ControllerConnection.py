@@ -4,7 +4,7 @@ from .ControllerReceiver import ControllerReceiver
 from VolumeLogic import VolumeMixer, ChangedValue
 
 
-class ControllerConnection():
+class ControllerConnection:
     # TODO: Figure out how to set the BOARDNAME dynamically.
     BOARDNAME = "USB Serial Device (COM4)"
 
@@ -14,8 +14,8 @@ class ControllerConnection():
         ChangedValue.COLOR: lambda subject, index: subject.applications[index].color_matrix,
     }
 
-    def __init__(self, volumeMixer):
-        self.volumeMixer = volumeMixer
+    def __init__(self, volume_mixer):
+        self.volume_mixer = volume_mixer
         # TODO: Figure out how to set the port dynamically.
         self.serial = serial.Serial('COM4', 9600)
         ControllerReceiver(self).start()
@@ -25,14 +25,14 @@ class ControllerConnection():
         self.serial.write(payload.encode())
 
     def receive_from_controller(self):
-        controllerMsg = self.serial.readline()
-        data = controllerMsg.decode("utf-8").split(".")
-        self.volumeMixer.modify_application(data[0], data[1], data[2])
+        controller_msg = self.serial.readline()
+        data = controller_msg.decode("utf-8").split(".")
+        self.volume_mixer.modify_application(data[0], data[1], data[2])
 
-    def connectionAlive(self):
-        comPorts = [tuple(p) for p in list(serial.tools.list_ports.comports())]
-        for comPort in comPorts:
-            if self.BOARDNAME in comPort:
+    def connection_alive(self):
+        com_ports = [tuple(p) for p in list(serial.tools.list_ports.comports())]
+        for com_port in com_ports:
+            if self.BOARDNAME in com_port:
                 return True
         return False
 

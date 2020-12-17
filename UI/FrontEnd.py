@@ -3,7 +3,6 @@ from tkinter.colorchooser import askcolor
 from VolumeLogic import ChangedValue, VolumeMixer
 from SystemConnectors import WindowsConnection
 from functools import partial
-import time
 
 
 class FrontEnd:
@@ -24,7 +23,6 @@ class FrontEnd:
         :param knob: Knob number
         """
         color = [int(x) for x in askcolor()[0]]
-        print(time.time())
         self._volume_mixer.modify_application(knob, ChangedValue.COLOR, color)
 
     def get_apps(self):

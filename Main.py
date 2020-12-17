@@ -9,6 +9,6 @@ if __name__ == '__main__':
     """
     os_connection = WindowsConnection()
     volume_mixer = VolumeMixer(os_connection)
-    controllerConnection = ControllerConnection(volume_mixer)
-    volume_mixer.attach(controllerConnection)
+    controller_connection = ControllerConnection(volume_mixer)
+    volume_mixer.attach(controller_connection)
     FrontEnd(volume_mixer).launch()
