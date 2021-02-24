@@ -41,6 +41,16 @@ module CreateRingStructure() {
   }
 }
 
+module CreateRingOfLeds() {
+  for (ledNum = [0:MAX_LEDS-1]) {
+    translate([(ledRad)*cos(ledNum*(360/MAX_LEDS)),(ledRad)*sin(ledNum*(360/MAX_LEDS)),0]) {
+      rotate((360/MAX_LEDS) * ledNum) {
+        cube(LED_SIZE, true);
+      }
+    }
+  }
+}
+
 // Front panel
 union() {
   difference() {
@@ -48,14 +58,8 @@ union() {
     
     // LED Ring Cutouts
     CreateRingStructure() {
-      cylinder(LED_THICKNESS, potentiometerSupportRad, potentiometerSupportRad);
-      for (ledNum = [0:MAX_LEDS-1]) {
-        translate([(ledRad)*cos(ledNum*(360/MAX_LEDS)),(ledRad)*sin(ledNum*(360/MAX_LEDS)),0]) {
-          rotate((360/MAX_LEDS) * ledNum){
-            cube(LED_SIZE, true);
-          }
-        }
-      }
+      cylinder(LED_THICKNESS, POTENTIOMETER_SHAFT_RAD, POTENTIOMETER_SHAFT_RAD);
+      CreateRingOfLeds();
     }
   }
   
@@ -64,6 +68,24 @@ union() {
     difference() {
       cylinder(POTENTIOMETER_KNOB_OFFSET, potentiometerSupportRad, potentiometerSupportRad);
       cylinder(POTENTIOMETER_KNOB_OFFSET, POTENTIOMETER_SHAFT_RAD, POTENTIOMETER_SHAFT_RAD);
+    }
+  }
+}
+
+// LED Rings
+translate([0,0,LED_THICKNESS]) {
+  color("blue"){
+    difference() {
+      CreateRingStructure() {
+        difference() {
+          cylinder(LED_THICKNESS, RING_RAD, RING_RAD);
+          cylinder(LED_THICKNESS, LED_INNER_RAD, LED_INNER_RAD);
+        }
+      }
+
+      CreateRingStructure() {
+        CreateRingOfLeds();
+      }
     }
   }
 }
