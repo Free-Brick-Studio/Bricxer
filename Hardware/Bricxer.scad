@@ -51,6 +51,21 @@ module CreateRingOfLeds() {
   }
 }
 
+module CreateRingWireHoles() {
+  for (ledNum = [0:MAX_LEDS-1]) {
+    translate([(ledRad)*cos(ledNum*(360/MAX_LEDS)),(ledRad)*sin(ledNum*(360/MAX_LEDS)),0]) {
+      rotate((360/MAX_LEDS) * ledNum) {
+        i = 0;
+        if (ledNum == i || ledNum == i + 2 || ledNum == i + 6 || ledNum == i + 8) {
+          translate([1.5, 4.5, 0]) {
+            cylinder(LED_THICKNESS, 1, 1);
+          }
+        }
+      }
+    }
+  }
+}
+
 // Front panel
 union() {
   difference() {
@@ -85,6 +100,7 @@ translate([0,0,LED_THICKNESS]) {
 
       CreateRingStructure() {
         CreateRingOfLeds();
+        CreateRingWireHoles();
       }
     }
   }
