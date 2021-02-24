@@ -13,9 +13,7 @@ POTENTIOMETER_KNOB_OFFSET = 4;
 potentiometerSupportRad = POTENTIOMETER_SHAFT_RAD + 2.5;
 ledRad = (LED_OUTER_RAD - LED_INNER_RAD)/2 + LED_INNER_RAD;
 
-barThickness = LED_THICKNESS;
-barLength = RING_RAD * 2;
-barWidth = 3;
+capThickness = .8;
 
 // Determine if rings will be snaked or not
 function isSnake(row) = ( row == len(RING_GRID) - 1 ? true : RING_GRID[row] % 2 != RING_GRID[row+1] % 2 && isSnake(row+1));
@@ -110,15 +108,19 @@ translate([0,0,LED_THICKNESS]) {
   }
 }
 
-// Bars to hold ring
-translate ([0,0,LED_THICKNESS*2]) {
+// LED cap to hold LED in place
+translate ([0,0,LED_THICKNESS]) {
   color("orange") {
     CreateRingStructure() {
-      translate([0, -RING_RAD * 2/3, barThickness/2]) {
-        cube([barLength, barWidth, barThickness], true);
-      }
-      translate([0, RING_RAD * 2/3, barThickness/2]) {
-        cube([barLength, barWidth, barThickness], true);
+      difference() {
+        union() {
+          cylinder(LED_THICKNESS, LED_INNER_RAD, LED_INNER_RAD);
+          
+          translate([0, 0, LED_THICKNESS]) {
+            cylinder(capThickness, ledRad, ledRad);
+          }
+        }
+        cylinder(POTENTIOMETER_KNOB_OFFSET, potentiometerSupportRad, potentiometerSupportRad);
       }
     }
   }
