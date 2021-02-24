@@ -7,6 +7,10 @@ LED_THICKNESS = 1.6;
 LED_OUTER_RAD = 34.33 / 2;
 LED_INNER_RAD = 24.55 / 2;
 
+POTENTIOMETER_SHAFT_RAD = 6.75/2;
+POTENTIOMETER_KNOB_OFFSET = 4;
+
+potentiometerSupportRad = POTENTIOMETER_SHAFT_RAD + 2.5;
 ledRad = (LED_OUTER_RAD - LED_INNER_RAD)/2 + LED_INNER_RAD;
 
 // Determine if rings will be snaked or not
@@ -44,6 +48,7 @@ union() {
     
     // LED Ring Cutouts
     CreateRingStructure() {
+      cylinder(LED_THICKNESS, potentiometerSupportRad, potentiometerSupportRad);
       for (ledNum = [0:MAX_LEDS-1]) {
         translate([(ledRad)*cos(ledNum*(360/MAX_LEDS)),(ledRad)*sin(ledNum*(360/MAX_LEDS)),0]) {
           rotate((360/MAX_LEDS) * ledNum){
@@ -51,6 +56,14 @@ union() {
           }
         }
       }
+    }
+  }
+  
+  // Potentiometer support
+  CreateRingStructure() {
+    difference() {
+      cylinder(POTENTIOMETER_KNOB_OFFSET, potentiometerSupportRad, potentiometerSupportRad);
+      cylinder(POTENTIOMETER_KNOB_OFFSET, POTENTIOMETER_SHAFT_RAD, POTENTIOMETER_SHAFT_RAD);
     }
   }
 }
