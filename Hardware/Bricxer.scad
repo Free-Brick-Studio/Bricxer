@@ -15,6 +15,11 @@ POTENTIOMETER_KNOB_OFFSET = 4;
 potentiometerSupportRad = POTENTIOMETER_SHAFT_RAD + 2.5;
 ledRad = (LED_OUTER_RAD - LED_INNER_RAD)/2 + LED_INNER_RAD;
 
+magnetRad = 2.5/2;
+magnetDepth = 0.5;
+maxDistance = 50;
+magnetOffset = 2;
+
 capThickness = .8;
 
 // Determine if rings will be snaked or not
@@ -27,6 +32,27 @@ rowHeightFunc = isSnake(0) ? snakeHeight : boxHeight;
 
 length = (RING_GAP + RING_RAD * 2) * max(RING_GRID) + RING_GAP;
 height = rowHeightFunc(len(RING_GRID) - 1) + RING_GAP + RING_RAD;
+
+function generateArray(array, index, movingIndex) = index == movingIndex ? array[index]/2 : array[index];
+function arrayShift(array, index, movingIndex, shiftValue) = index == movingIndex ? array[index] + shiftValue : array[index];
+
+module CutMagnetHoles(translationArray, movingIndex, oppositeDistance, fixedIndex, offset = 0) {
+  if (movingIndex < len(translationArray)) {
+    if (translationArray[movingIndex] > maxDistance) {
+      movementArray = [for (ind = [0:len(translationArray)-1])arrayShift(translationArray, ind, movingIndex, offset)];
+      oppositeArray = [for (ind = [0:len(movementArray)-1])arrayShift(movementArray, ind, fixedIndex, oppositeDistance)];
+      translate(movementArray) {
+        cylinder(magnetDepth, magnetRad, magnetRad);
+      }
+      translate(oppositeArray) {
+        cylinder(magnetDepth, magnetRad, magnetRad);
+      }
+      newArray = [for (ind = [0:len(movementArray)-1])generateArray(translationArray, ind, movingIndex)];
+      CutMagnetHoles(newArray, movingIndex, oppositeDistance, fixedIndex, offset);
+      CutMagnetHoles(newArray, movingIndex, oppositeDistance, fixedIndex, offset + translationArray[movingIndex]);
+    }
+  }
+}
 
 module CreateRingStructure() {
   for (row = [0: len(RING_GRID) - 1]) {    
@@ -74,7 +100,22 @@ module CreateRingWireHoles() {
 union() {
   difference() {
     cube([length, height, LED_THICKNESS]);
-    
+    // Magnet Hole Cutouts
+    CutMagnetHoles([magnetOffset, height/2, 0], 1, length - (2 * magnetOffset), 0);
+    CutMagnetHoles([length/2, magnetOffset, 0], 0, height - (2 * magnetOffset), 1);
+    translate([magnetOffset, magnetOffset, 0]) {
+      cylinder(magnetDepth, magnetRad, magnetRad);
+    }
+    translate([length - magnetOffset, height - magnetOffset, 0]) {
+      cylinder(magnetDepth, magnetRad, magnetRad);
+    }
+    translate([length - magnetOffset, magnetOffset, 0]) {
+      cylinder(magnetDepth, magnetRad, magnetRad);
+    }
+    translate([magnetOffset, height - magnetOffset, 0]) {
+      cylinder(magnetDepth, magnetRad, magnetRad);
+    }
+
     // LED Ring Cutouts
     CreateRingStructure() {
       cylinder(LED_THICKNESS, POTENTIOMETER_SHAFT_RAD, POTENTIOMETER_SHAFT_RAD);
