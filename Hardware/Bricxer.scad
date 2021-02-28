@@ -1,3 +1,5 @@
+use <threads.scad>;
+
 RING_RAD = 36.8 / 2;
 RING_GAP = 2.2;
 RING_GRID = [3,2];
@@ -83,33 +85,33 @@ union() {
   // Potentiometer support
   CreateRingStructure() {
     difference() {
-      cylinder(POTENTIOMETER_KNOB_OFFSET, potentiometerSupportRad, potentiometerSupportRad);
+      metric_thread (diameter=potentiometerSupportRad * 2, pitch=1, length=POTENTIOMETER_KNOB_OFFSET, internal=false);
       cylinder(POTENTIOMETER_KNOB_OFFSET, POTENTIOMETER_SHAFT_RAD, POTENTIOMETER_SHAFT_RAD);
     }
   }
 }
 
 // LED Rings
-translate([0,0,LED_THICKNESS]) {
-  color("blue"){
-    difference() {
-      CreateRingStructure() {
-        difference() {
-          cylinder(LED_THICKNESS, RING_RAD, RING_RAD);
-          cylinder(LED_THICKNESS, LED_INNER_RAD, LED_INNER_RAD);
-        }
-      }
+//translate([0,0,LED_THICKNESS]) {
+//  color("blue"){
+//    difference() {
+//      CreateRingStructure() {
+//        difference() {
+          //cylinder(LED_THICKNESS, RING_RAD, RING_RAD);
+          //cylinder(LED_THICKNESS, LED_INNER_RAD, LED_INNER_RAD);
+//        }
+ //     }
 
-      CreateRingStructure() {
-        CreateRingOfLeds();
-        CreateRingWireHoles();
-      }
-    }
-  }
-}
+//      CreateRingStructure() {
+        //CreateRingOfLeds();
+        //CreateRingWireHoles();
+//      }
+//    }
+//  }
+//}
 
 // LED cap to hold LED in place
-translate ([0,0,LED_THICKNESS]) {
+translate ([0,0,LED_THICKNESS * 2]) {
   color("orange") {
     CreateRingStructure() {
       difference() {
@@ -120,7 +122,7 @@ translate ([0,0,LED_THICKNESS]) {
             cylinder(capThickness, ledRad, ledRad);
           }
         }
-        cylinder(POTENTIOMETER_KNOB_OFFSET, potentiometerSupportRad, potentiometerSupportRad);
+        metric_thread (diameter=potentiometerSupportRad * 2, pitch=1, length=POTENTIOMETER_KNOB_OFFSET, internal=true);
       }
     }
   }
