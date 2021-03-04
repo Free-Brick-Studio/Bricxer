@@ -12,7 +12,7 @@ LED_INNER_RAD = 23.30 / 2;
 POTENTIOMETER_SHAFT_RAD = 7.25/2;
 POTENTIOMETER_KNOB_OFFSET = 4;
 
-potentiometerSupportRad = POTENTIOMETER_SHAFT_RAD + 2.5;
+potentiometerSupportRad = POTENTIOMETER_SHAFT_RAD + 4;
 ledRad = (LED_OUTER_RAD - LED_INNER_RAD)/2 + LED_INNER_RAD;
 
 magnetRad = 2.5/2;
@@ -128,6 +128,9 @@ union() {
     difference() {
       metric_thread (diameter=potentiometerSupportRad * 2 - .25, pitch=1, length=POTENTIOMETER_KNOB_OFFSET, internal=false, square=true);
       cylinder(POTENTIOMETER_KNOB_OFFSET, POTENTIOMETER_SHAFT_RAD, POTENTIOMETER_SHAFT_RAD);
+      translate([potentiometerSupportRad - 1.5, 0, POTENTIOMETER_KNOB_OFFSET]) {
+        cube([1, 2.5, 1.5], true);
+      }
     }
   }
 }
