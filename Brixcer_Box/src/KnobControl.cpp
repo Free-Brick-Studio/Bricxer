@@ -7,9 +7,9 @@ KnobControl::KnobControl(int knobPinA, int knobPinB, int buttonPin) {
     this->knobPinB = knobPinB;
     this->buttonPin = buttonPin;
 
-    pinMode(this->knobPinA, INPUT);
-    pinMode(this->knobPinB, INPUT);
-    pinMode(this->buttonPin, INPUT);
+    pinMode(this->knobPinA, INPUT_PULLUP);
+    pinMode(this->knobPinB, INPUT_PULLUP);
+    pinMode(this->buttonPin, INPUT_PULLUP);
 }
 
 int* KnobControl::readKnobValues() {
@@ -18,5 +18,5 @@ int* KnobControl::readKnobValues() {
 }
 
 int KnobControl::readButtonValue() {
-    return digitalRead(buttonPin);
+    return !digitalRead(buttonPin);
 }

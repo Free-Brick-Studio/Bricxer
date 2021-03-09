@@ -30,39 +30,67 @@
 #define Button1 D16
 #define LedChain D10
 
-#define KnobCount 5
+
+#define KnobCount 2
 
 // Define controls for the box
-KnobControl knobs[KnobCount];
-LedControl leds[KnobCount];
-MediaControl mediaControl(PlayPause, Previous, Next);
+KnobControl* knobs = (KnobControl*) malloc(sizeof(KnobControl) * KnobCount);
+//LedControl leds[KnobCount];
+//MediaControl mediaControl(PlayPause, Previous, Next);
 
+
+void buttonClick();
+void sendData(int, int, int);
 
 void setup() {
     // Turn on the serial monitor
     Serial.begin(9600);
 
-    int knobPins[] = {Knob1OutA, Knob1OutB, Knob2OutA, Knob2OutB, Knob3OutA, Knob3OutB, Knob4OutA, Knob4OutB, Knob5OutA, Knob5OutB};
-    int buttonPins[] = {Button1, Button2, Button3, Button4, Button5};
+    // int knobPins[] = {Knob1OutA, Knob1OutB, Knob2OutA, Knob2OutB, Knob3OutA, Knob3OutB, Knob4OutA, Knob4OutB, Knob5OutA, Knob5OutB};
+    // int buttonPins[] = {Button1, Button2, Button3, Button4, Button5};
+    int knobPins[] = {0, 1, 2, 3};
+    int buttonPins[] = {23, 22};
 
     // Create the controllers for the knobs and leds
     for (int i = 0; i < KnobCount; i++) {
         KnobControl knob(knobPins[i * 2], knobPins[i * 2 + 1], buttonPins[i]);
         knobs[i] = knob;
-
-        LedControl led(LedChain);
-        leds[i] = led;
+        attachInterrupt(buttonPins[i], buttonClick, FALLING);
     }
 }
  
 void loop() {
+    
+}
 
+int countDigits(int num) {
+    int digits = 0;
+
+    while (num) {
+        num /= 10;
+        digits++;
+    }
+
+    return digits;
 }
 
 void sendData(int control, int action, int value) {
-
+    // Create buffer for the control.action.value combo (two additional spots for \n and \0)
+    char str[countDigits(control) + countDigits(action) + countDigits(value) + 4];
+    sprintf(str, "%d.%d.%d\n", control, action, value);
+    Serial.println(str);
 }
 
 void receiveData() {
 
+}
+
+void buttonClick() {
+    Serial.println("Triggered");
+    for (int i = 0; i < KnobCount; i++) {
+        int button = knobs[i].readButtonValue();
+        if (button) {
+            sendData(i, 0, button);
+        }
+    }
 }
