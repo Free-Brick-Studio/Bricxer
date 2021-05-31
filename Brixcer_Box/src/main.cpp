@@ -78,7 +78,7 @@ void sendData(int control, int action, int value) {
     // Create buffer for the control.action.value combo (two additional spots for \n and \0)
     char str[countDigits(control) + countDigits(action) + countDigits(value) + 4];
     sprintf(str, "%d.%d.%d\n", control, action, value);
-    Serial.println(str);
+    Serial.print(str);
 }
 
 void receiveData() {
@@ -86,7 +86,6 @@ void receiveData() {
 }
 
 void buttonClick() {
-    Serial.println("Triggered");
     for (int i = 0; i < KnobCount; i++) {
         int button = knobs[i].readButtonValue();
         if (button) {

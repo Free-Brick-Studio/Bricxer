@@ -18,5 +18,15 @@ int* KnobControl::readKnobValues() {
 }
 
 int KnobControl::readButtonValue() {
-    return !digitalRead(buttonPin);
+    // Check if this button was the activated one
+    if (!digitalRead(buttonPin)) {
+        Serial.println(millis() - buttonReadTime);
+        Serial.println("Button");
+        buttonReadTime = millis();
+        count += 1;
+        Serial.println(count);
+        return 1;
+    }
+
+    return 0;
 }
