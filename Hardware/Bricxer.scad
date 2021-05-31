@@ -2,7 +2,7 @@ use <threads.scad>;
 
 RING_RAD = 36.8 / 2;
 RING_GAP = 2.2;
-RING_GRID = [1];
+RING_GRID = [2, 3];
 MAX_LEDS = 12;
 LED_SIZE = 5.25;
 LED_THICKNESS = 1.6;
@@ -21,6 +21,9 @@ maxDistance = 50;
 magnetOffset = 2;
 
 capThickness = .8;
+
+wallThickness = 1.5;
+wallDepth = 20;
 
 // Determine if rings will be snaked or not
 function isSnake(row) = ( row == len(RING_GRID) - 1 ? true : RING_GRID[row] % 2 != RING_GRID[row+1] % 2 && isSnake(row+1));
@@ -96,6 +99,57 @@ module CreateRingWireHoles() {
   }
 }
 
+module CreateWalls() {
+  difference() {
+    color("red") {
+      translate([0, -wallThickness, 0]) {
+        cube([length, wallThickness, wallDepth]);
+      }
+      translate([0, height, 0]) {
+        cube([length, wallThickness, wallDepth]);
+      }
+      translate([-wallThickness, -wallThickness, 0]) {
+        cube([wallThickness, height + (2 * wallThickness), wallDepth]);
+      }
+      translate([length, -wallThickness, 0]) {
+        cube([wallThickness, height + (2 * wallThickness), (wallDepth - LED_THICKNESS)]);
+      }
+    }
+    translate([0, 0, wallDepth-LED_THICKNESS]) {
+      CreateBacker();
+    }
+  }
+}
+
+module CreateBacker() {
+  color("green") {
+    // cube([length, height, LED_THICKNESS]);
+    // linear_extrude(LED_THICKNESS, scale=1.025) {
+    //   translate()
+    //   square([length, height]);
+    // }
+    intersection() {
+      hull() {
+        translate([0, 0, 0]) {
+          cylinder(d1=wallThickness,d2=.25, h=LED_THICKNESS, center=true);
+        }
+        translate([0, height, 0]) {
+          cylinder(d1=wallThickness,d2=.25, h=LED_THICKNESS, center=true);
+        }
+        translate([length, 0, 0]) {
+          cylinder(d1=wallThickness,d2=.25, h=LED_THICKNESS, center=true);
+        } 
+        translate([length, height, 0]){
+          cylinder(d1=wallThickness,d2=.25, h=LED_THICKNESS, center=true);
+        }
+      }
+      translate([0, -wallThickness/2, 0]) {
+        cube([length, (height + wallThickness), LED_THICKNESS]);
+      }
+    }
+  }
+}
+
 // Front panel
 union() {
   difference() {
@@ -134,7 +188,7 @@ union() {
     }
   }
 }
-
+CreateWalls();
 // LED Rings
 //translate([0,0,LED_THICKNESS]) {
 //  color("blue"){
@@ -172,4 +226,9 @@ rotate([0,180,0]){
       }
     }
   }
+}
+
+//Backer to hide all of our messy wiring
+translate([0, -(height + height/2), 0]) {
+  CreateBacker();
 }
