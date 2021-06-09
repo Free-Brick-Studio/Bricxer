@@ -123,11 +123,7 @@ module CreateWalls() {
 
 module CreateBacker() {
   color("green") {
-    // cube([length, height, LED_THICKNESS]);
-    // linear_extrude(LED_THICKNESS, scale=1.025) {
-    //   translate()
-    //   square([length, height]);
-    // }
+    union() {
     intersection() {
       hull() {
         translate([0, 0, 0]) {
@@ -145,6 +141,18 @@ module CreateBacker() {
       }
       translate([0, -wallThickness/2, 0]) {
         cube([length, (height + wallThickness), LED_THICKNESS]);
+      }
+    }
+      translate([length, -wallThickness, 0]) {
+        cube([wallThickness, (height + wallThickness * 2), LED_THICKNESS]);
+      }
+      translate([length-5, height/2, 0]) {
+        difference() {
+          cylinder(d=10, LED_THICKNESS);
+          translate([-2, 0, 0]) {
+            cylinder(d=10, LED_THICKNESS);
+          }
+        }
       }
     }
   }
