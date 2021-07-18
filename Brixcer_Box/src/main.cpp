@@ -31,7 +31,7 @@
 #define LedChain D10
 
 
-#define KnobCount 2
+#define KnobCount 5
 
 // Define controls for the box
 KnobControl* knobs = (KnobControl*) malloc(sizeof(KnobControl) * KnobCount);
@@ -41,18 +41,14 @@ KnobControl* knobs = (KnobControl*) malloc(sizeof(KnobControl) * KnobCount);
 
 void buttonClick();
 void knobPinTrigger();
-void knobPinATrigger();
-void knobPinBTrigger();
 void sendData(int, int, int);
 
 void setup() {
     // Turn on the serial monitor
     Serial.begin(9600);
 
-    // int knobPins[] = {Knob1OutA, Knob1OutB, Knob2OutA, Knob2OutB, Knob3OutA, Knob3OutB, Knob4OutA, Knob4OutB, Knob5OutA, Knob5OutB};
-    // int buttonPins[] = {Button1, Button2, Button3, Button4, Button5};
-    int knobPins[] = {0, 1, 2, 3};
-    int buttonPins[] = {23, 22};
+    int knobPins[] = {Knob1OutA, Knob1OutB, Knob2OutA, Knob2OutB, Knob3OutA, Knob3OutB, Knob4OutA, Knob4OutB, Knob5OutA, Knob5OutB};
+    int buttonPins[] = {Button1, Button2, Button3, Button4, Button5};
 
     // Create the controllers for the knobs and leds
     for (int i = 0; i < KnobCount; i++) {
@@ -65,7 +61,7 @@ void setup() {
 }
 
 void loop() {
-    
+
 }
 
 int countDigits(int num) {
@@ -102,31 +98,8 @@ void buttonClick() {
 void knobPinTrigger() {
     for (int i = 0; i < KnobCount; i++) {
         int button = knobs[i].readKnobValues();
-        if (button == 0) {
-            continue;
-        }
-
-        if (button == -1) {
-            Serial.println("     CCW");
-        }
-        if (button == 1) {
-            Serial.println("             CW");
-        }
-        if (button == 2) {
-            Serial.println("                   Shit went kaboom");
-        }
-        // sendData(i, 1, button);
-    }
-}
-
-void knobPinATrigger() {
-    for (int i = 0; i < KnobCount; i++) {
-        knobs[i].readKnobAValue();
-    }
-}
-
-void knobPinBTrigger() {
-    for (int i = 0; i < KnobCount; i++) {
-        knobs[i].readKnobBValue();
+        if (button != 0) {
+            sendData(i, 1, button);
+        } 
     }
 }

@@ -15,13 +15,10 @@ KnobControl::KnobControl(int knobPinA, int knobPinB, int buttonPin) {
 int KnobControl::readKnobValues() {
     int knobValues[2] = {digitalRead(knobPinA), digitalRead(knobPinB)};
 
+    // Check if this knob was the activated one
     int temp = 0;
     if (prevPinARead != knobValues[0] || prevPinBRead != knobValues[1]) {
-        Serial.print(knobValues[0]);
-        Serial.println(knobValues[1]);
-
         bool aChanged = prevPinARead != knobValues[0];
-        // bool bChanged = prevPinBRead != knobValues[1];
         bool pinsAreEqual = knobValues[0] == knobValues[1];
 
         if (aChanged && pinsAreEqual) {
@@ -31,16 +28,6 @@ int KnobControl::readKnobValues() {
             temp = 1;
         }
 
-        // if (bChanged && pinsAreEqual) {
-        //     temp = 1;
-        // }
-        // if (bChanged && !pinsAreEqual) {
-        //     temp = -1;
-        // }
-        // if (aChanged && bChanged) {
-        //     temp = 2;
-        // }
-
         prevPinARead = knobValues[0];
         prevPinBRead = knobValues[1];
     }
@@ -48,35 +35,9 @@ int KnobControl::readKnobValues() {
     return temp;
 }
 
-int KnobControl::readKnobAValue() {
-    int curr = digitalRead(knobPinA);
-
-    int temp = 0;
-    if (prevPinARead != curr) {
-        if (curr != digitalRead(knobPinB)) {
-            temp = 1;
-        } else {
-            temp = -1;
-        }
-
-        prevPinARead = curr;
-    }
-
-    return temp;
-}
-
-void KnobControl::readKnobBValue() {
-    prevPinBRead = !prevPinBRead;
-}
-
 int KnobControl::readButtonValue() {
     // Check if this button was the activated one
     if (!digitalRead(buttonPin)) {
-        Serial.println(millis() - buttonReadTime);
-        Serial.println("Button");
-        buttonReadTime = millis();
-        count += 1;
-        Serial.println(count);
         return 1;
     }
 
