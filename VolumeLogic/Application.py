@@ -1,37 +1,41 @@
-from VolumeLogic import ChangedValue, Subject, VolumeCalculation
+from .ChangedValue import ChangedValue
+from .Subject import Subject
+from .VolumeCalculation import VolumeCalculation
 
 
 class Application(Subject):
     """Application on the computer which can play sound."""
 
-    def __init__(self, name, volume):
+    os_connection = None
+
+    def __init__(self, name):
         super().__init__()
-        self.name = name
-        self.volume = volume
-        self.color_matrix = [0, 0, 0]
+        self._name = name
+        self._color_matrix = [0, 0, 0]
 
     @property
     def name(self):
-        return self.name
+        return self._name
 
     @name.setter
     def name(self, name):
-        self.name = name
+        self._name = name
 
     @property
     def volume(self):
-        return self.volume
+        return self.os_connection.get_process_volume(self.name)
 
     @volume.setter
     def volume(self, value):
-        self.volume = VolumeCalculation.convert_to_volume(self.volume, value)
+        volume = VolumeCalculation.convert_to_volume(self.volume, value)
+        self.os_connection.set_process_volume(volume, self.name)
         self.notify_all(ChangedValue.VOLUME)
 
     @property
     def color_matrix(self):
-        return self.color_matrix
+        return self._color_matrix
 
     @color_matrix.setter
     def color_matrix(self, color_matrix):
-        self.color_matrix = color_matrix
+        self._color_matrix = color_matrix
         self.notify_all(ChangedValue.COLOR)

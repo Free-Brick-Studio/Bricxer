@@ -2,6 +2,7 @@
 .vscode
 .vs
 .idea
+__pycache__
 
 # Framework folders
 .pio
