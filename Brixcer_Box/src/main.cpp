@@ -30,15 +30,20 @@
 #define Button1 D16
 #define LedChain D10
 
+
 #define KnobCount 5
 
 #define LEDPIN 13
 
 // Define controls for the box
-KnobControl knobs[KnobCount];
-LedControl leds[KnobCount];
-MediaControl mediaControl(PlayPause, Previous, Next);
+KnobControl* knobs = (KnobControl*) malloc(sizeof(KnobControl) * KnobCount);
+//LedControl leds[KnobCount];
+//MediaControl mediaControl(PlayPause, Previous, Next);
 
+
+void buttonClick();
+void knobPinTrigger();
+void sendData(int, int, int);
 
 void setup() {
     // Turn on the serial monitor
@@ -53,12 +58,12 @@ void setup() {
     for (int i = 0; i < KnobCount; i++) {
         KnobControl knob(knobPins[i * 2], knobPins[i * 2 + 1], buttonPins[i]);
         knobs[i] = knob;
-
-        LedControl led(LedChain);
-        leds[i] = led;
+        attachInterrupt(buttonPins[i], buttonClick, FALLING);
+        attachInterrupt(knobPins[i * 2], knobPinTrigger, FALLING);
+        attachInterrupt(knobPins[i * 2 + 1], knobPinTrigger, FALLING);
     }
 }
- 
+
 void loop() {
     //Serial.printLn("0.Value.");
     digitalWrite(LEDPIN, HIGH);
@@ -67,10 +72,42 @@ void loop() {
     delay(1000);
 }
 
-void sendData(int control, int action, int value) {
+int countDigits(int num) {
+    int digits = 0;
 
+    while (num) {
+        num /= 10;
+        digits++;
+    }
+
+    return digits;
+}
+
+void sendData(int control, int action, int value) {
+    // Create buffer for the control.action.value combo (two additional spots for \n and \0)
+    char str[countDigits(control) + countDigits(action) + countDigits(value) + 4];
+    sprintf(str, "%d.%d.%d\n", control, action, value);
+    Serial.print(str);
 }
 
 void receiveData() {
 
+}
+
+void buttonClick() {
+    for (int i = 0; i < KnobCount; i++) {
+        int button = knobs[i].readButtonValue();
+        if (button) {
+            sendData(i, 0, button);
+        }
+    }
+}
+
+void knobPinTrigger() {
+    for (int i = 0; i < KnobCount; i++) {
+        int button = knobs[i].readKnobValues();
+        if (button != 0) {
+            sendData(i, 1, button);
+        } 
+    }
 }
