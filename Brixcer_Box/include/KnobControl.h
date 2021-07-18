@@ -7,6 +7,9 @@ class KnobControl {
 
     int count = 0;
 
+    int prevPinARead;
+    int prevPinBRead;
+
     int knobPinA;
     int knobPinB;
     int buttonPin;
@@ -14,5 +17,7 @@ class KnobControl {
     public:
         KnobControl(int knobPinA, int knobPinB, int buttonPin);
         int readKnobValues();
+        int readKnobAValue();
+        void readKnobBValue();
         int readButtonValue();
 };

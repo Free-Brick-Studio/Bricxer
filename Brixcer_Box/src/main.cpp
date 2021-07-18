@@ -40,6 +40,9 @@ KnobControl* knobs = (KnobControl*) malloc(sizeof(KnobControl) * KnobCount);
 
 
 void buttonClick();
+void knobPinTrigger();
+void knobPinATrigger();
+void knobPinBTrigger();
 void sendData(int, int, int);
 
 void setup() {
@@ -56,9 +59,11 @@ void setup() {
         KnobControl knob(knobPins[i * 2], knobPins[i * 2 + 1], buttonPins[i]);
         knobs[i] = knob;
         attachInterrupt(buttonPins[i], buttonClick, FALLING);
+        attachInterrupt(knobPins[i * 2], knobPinTrigger, FALLING);
+        attachInterrupt(knobPins[i * 2 + 1], knobPinTrigger, FALLING);
     }
 }
- 
+
 void loop() {
     
 }
@@ -91,5 +96,37 @@ void buttonClick() {
         if (button) {
             sendData(i, 0, button);
         }
+    }
+}
+
+void knobPinTrigger() {
+    for (int i = 0; i < KnobCount; i++) {
+        int button = knobs[i].readKnobValues();
+        if (button == 0) {
+            continue;
+        }
+
+        if (button == -1) {
+            Serial.println("     CCW");
+        }
+        if (button == 1) {
+            Serial.println("             CW");
+        }
+        if (button == 2) {
+            Serial.println("                   Shit went kaboom");
+        }
+        // sendData(i, 1, button);
+    }
+}
+
+void knobPinATrigger() {
+    for (int i = 0; i < KnobCount; i++) {
+        knobs[i].readKnobAValue();
+    }
+}
+
+void knobPinBTrigger() {
+    for (int i = 0; i < KnobCount; i++) {
+        knobs[i].readKnobBValue();
     }
 }
