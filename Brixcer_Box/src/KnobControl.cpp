@@ -16,23 +16,23 @@ int KnobControl::readKnobValues() {
     int knobValues[2] = {digitalRead(knobPinA), digitalRead(knobPinB)};
 
     // Check if this knob was the activated one
-    int temp = 0;
+    int spinDirection = 0;
     if (prevPinARead != knobValues[0] || prevPinBRead != knobValues[1]) {
         bool aChanged = prevPinARead != knobValues[0];
         bool pinsAreEqual = knobValues[0] == knobValues[1];
 
         if (aChanged && pinsAreEqual) {
-            temp = -1;
+            spinDirection = -1;
         }
         if (aChanged && !pinsAreEqual) {
-            temp = 1;
+            spinDirection = 1;
         }
 
         prevPinARead = knobValues[0];
         prevPinBRead = knobValues[1];
     }
 
-    return temp;
+    return spinDirection;
 }
 
 int KnobControl::readButtonValue() {
