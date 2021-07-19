@@ -42,44 +42,31 @@ void buttonClick();
 void knobPinTrigger();
 void sendData(int, int, int);
 
-int volume = 0;
-
 void setup() {
     // Turn on the serial monitor
     Serial.begin(9600);
 
-    // int knobPins[] = {Knob1OutA, Knob1OutB, Knob2OutA, Knob2OutB, Knob3OutA, Knob3OutB, Knob4OutA, Knob4OutB, Knob5OutA, Knob5OutB};
-    // int buttonPins[] = {Button1, Button2, Button3, Button4, Button5};
+    int knobPins[] = {Knob1OutA, Knob1OutB, Knob2OutA, Knob2OutB, Knob3OutA, Knob3OutB, Knob4OutA, Knob4OutB, Knob5OutA, Knob5OutB};
+    int buttonPins[] = {Button1, Button2, Button3, Button4, Button5};
 
-    LedControl::InitLedControl(KnobCount, 15);
+    LedControl::InitLedControl(KnobCount, LedChain);
 
     // Create the controllers for the knobs and leds
     for (int i = 0; i < KnobCount; i++) {
-        // KnobControl knob(knobPins[i * 2], knobPins[i * 2 + 1], buttonPins[i]);
-        // knobs[i] = knob;
-        // attachInterrupt(buttonPins[i], buttonClick, FALLING);
-        // attachInterrupt(knobPins[i * 2], knobPinTrigger, FALLING);
-        // attachInterrupt(knobPins[i * 2 + 1], knobPinTrigger, FALLING);
+        KnobControl knob(knobPins[i * 2], knobPins[i * 2 + 1], buttonPins[i]);
+        knobs[i] = knob;
 
         LedControl led(i);
         leds[i] = led;
-        int colors[3] = {255, 64, 0};
-        led.setColorMatrix(colors);
+
+        attachInterrupt(buttonPins[i], buttonClick, FALLING);
+        attachInterrupt(knobPins[i * 2], knobPinTrigger, FALLING);
+        attachInterrupt(knobPins[i * 2 + 1], knobPinTrigger, FALLING);
     }
 }
 
 void loop() {
-    if (++volume >= 100) {
-        volume = 0;
-    }
 
-    Serial.println(volume);
-
-    for (int i = 0; i < KnobCount; i++) {
-        leds[i].setVolume(volume);
-    }
-
-    delay(25);
 }
 
 int countDigits(int num) {
