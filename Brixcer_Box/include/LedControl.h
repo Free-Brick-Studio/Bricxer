@@ -9,7 +9,7 @@ class LedControl {
     static const int LEDS_PER_RING = 12;
 
     // Number of LEDs dedicated to application color
-    static const int APPLICATION_LEDS = 4;
+    static const int APPLICATION_LEDS = 3;
 
     // Object for handling ring chain
     static Adafruit_NeoPixel strip;
