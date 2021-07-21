@@ -33,13 +33,10 @@
 
 #define KnobCount 5
 
-#define LEDPIN 13
-
 // Define controls for the box
 KnobControl* knobs = (KnobControl*) malloc(sizeof(KnobControl) * KnobCount);
-//LedControl leds[KnobCount];
+LedControl* leds = (LedControl*) malloc(sizeof(LedControl) * KnobCount);
 //MediaControl mediaControl(PlayPause, Previous, Next);
-
 
 void buttonClick();
 void knobPinTrigger();
@@ -47,17 +44,21 @@ void sendData(int, int, int);
 
 void setup() {
     // Turn on the serial monitor
-    //Serial.begin(9600);
-
-    pinMode(LEDPIN, OUTPUT);
+    Serial.begin(9600);
 
     int knobPins[] = {Knob1OutA, Knob1OutB, Knob2OutA, Knob2OutB, Knob3OutA, Knob3OutB, Knob4OutA, Knob4OutB, Knob5OutA, Knob5OutB};
     int buttonPins[] = {Button1, Button2, Button3, Button4, Button5};
+
+    LedControl::InitLedControl(KnobCount, LedChain);
 
     // Create the controllers for the knobs and leds
     for (int i = 0; i < KnobCount; i++) {
         KnobControl knob(knobPins[i * 2], knobPins[i * 2 + 1], buttonPins[i]);
         knobs[i] = knob;
+
+        LedControl led(i);
+        leds[i] = led;
+
         attachInterrupt(buttonPins[i], buttonClick, FALLING);
         attachInterrupt(knobPins[i * 2], knobPinTrigger, FALLING);
         attachInterrupt(knobPins[i * 2 + 1], knobPinTrigger, FALLING);
@@ -65,11 +66,7 @@ void setup() {
 }
 
 void loop() {
-    //Serial.printLn("0.Value.");
-    digitalWrite(LEDPIN, HIGH);
-    delay(1000);
-    digitalWrite(LEDPIN, LOW);
-    delay(1000);
+
 }
 
 int countDigits(int num) {
