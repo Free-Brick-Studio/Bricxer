@@ -42,6 +42,10 @@ void buttonClick();
 void knobPinTrigger();
 void sendData(int, int, int);
 
+// Define array for Serial input
+const int numChars = 32;
+char receivedChars[numChars];
+
 void setup() {
     // Turn on the serial monitor
     Serial.begin(9600);
@@ -66,7 +70,25 @@ void setup() {
 }
 
 void loop() {
+    if (Serial.available() > 0) {
+        int i = 0;
+        char data;
 
+        while (Serial.available() > 0) {
+            // read the incoming byte:
+            data = Serial.read();
+
+            receivedChars[i++] = data;
+            if (i >= numChars) {
+                i = numChars - 1;
+            }
+        }
+        receivedChars[i] = '\0';
+
+        // say what you got:
+        Serial.print("I received: ");
+        Serial.println(receivedChars);
+    }
 }
 
 int countDigits(int num) {
