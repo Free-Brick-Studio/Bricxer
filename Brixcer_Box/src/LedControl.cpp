@@ -25,11 +25,10 @@ void LedControl::InitLedControl(int count, int pin) {
 
 void LedControl::setVolume(int volume) {
     int volumeStartLed = this->ringNum * LEDS_PER_RING + APPLICATION_LEDS;
-    int volumeLedRange = LEDS_PER_RING - APPLICATION_LEDS;
-    int pixel = map(volume, 0, 100, 0, volumeLedRange - 1);
+    int pixel = map(volume, 0, 100, volumeStartLed, (this->ringNum + 1) * LEDS_PER_RING - 1);
 
-    strip.fill(strip.Color(0, 0, 0), volumeStartLed, volumeLedRange);
-    strip.setPixelColor(volumeStartLed + pixel, strip.Color(0, 255, 0));
+    strip.fill(strip.Color(0, 0, 0), volumeStartLed, LEDS_PER_RING - APPLICATION_LEDS);
+    strip.setPixelColor(pixel, strip.Color(0, 255, 0));
     strip.show();
 }
 
