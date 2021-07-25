@@ -26,7 +26,7 @@ class VolumeMixer(object):
         for session in sessions:
             if session.Process and session.Process.name() == process_name:
                 mixer = session.SimpleAudioVolume
-                return mixer.GetMasterVolume()
+                return mixer.GetMasterVolume() * 100
         return 0
     
     def set_system_volume(self, volume):
@@ -51,4 +51,5 @@ class VolumeMixer(object):
         for session in sessions:
             if session.Process and session.Process.name() == process_name:
                 mixer = session.SimpleAudioVolume
-                mixer.SetMasterVolume(volume)
+                temp = min(1, max(0, volume / 100))
+                mixer.SetMasterVolume(temp, None)
