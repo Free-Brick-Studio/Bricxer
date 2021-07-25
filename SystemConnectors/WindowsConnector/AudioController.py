@@ -3,8 +3,8 @@ from comtypes import CLSCTX_ALL
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 
 
-class VolumeMixer:
-    """Volume mixer for Windows."""
+class AudioController:
+    """Audio controller for Windows."""
 
     def get_system_volume(self):
         """
