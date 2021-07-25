@@ -1,20 +1,20 @@
-"""
-Process Controller for Windows
-"""
 from pycaw.pycaw import AudioUtilities
 
 
 class ProcessController:
+    """Process controller for Windows."""
 
-    def get_running_processes(self):
+    @staticmethod
+    def get_running_processes():
         """
-        Get the currently running process names which can be controlled by pycaw
+        Get the currently running process names which can be controlled.
         """
-        sessions = AudioUtilities.GetAllSessions()
         process_names = []
+
+        sessions = AudioUtilities.GetAllSessions()
         for session in sessions:
             if session.Process and session.Process.name():
                 name = session.Process.name()
-                #  lastDot = name.rfind(".")
-                process_names.append(name)  # [0:lastDot] if lastDot != -1 else name)
+                process_names.append(name)
+
         return process_names

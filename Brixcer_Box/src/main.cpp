@@ -38,15 +38,17 @@ KnobControl* knobs = (KnobControl*) malloc(sizeof(KnobControl) * KnobCount);
 LedControl* leds = (LedControl*) malloc(sizeof(LedControl) * KnobCount);
 //MediaControl mediaControl(PlayPause, Previous, Next);
 
-void buttonClick();
-void knobPinTrigger();
-
-void sendData(int, int, int);
-void receiveData();
-
 // Define array for Serial input
 const int numChars = 32;
 char receivedChars[numChars];
+
+// Define Serial interface
+void receiveData();
+void sendData(int, int, int);
+
+// Define rotary encoder interface
+void buttonClick();
+void knobPinTrigger();
 
 void setup() {
     // Turn on the serial monitor
