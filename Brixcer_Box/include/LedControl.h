@@ -2,9 +2,6 @@
 
 class LedControl {
 
-    // Length of array specifying RGB values
-    static const int COLORS = 3;
-
     // Number of LEDs per ring
     static const int LEDS_PER_RING = 12;
 

@@ -20,42 +20,42 @@ class IOsConnection(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def get_system_volume(self) -> int:
         """
-        Get the system level volume
+        Get the system level volume.
         """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_process_volume(self, processName: str) -> int:
+    def get_process_volume(self, process_name: str) -> int:
         """
-        Get the process level volume
+        Get the process level volume.
 
-        :param processName: The process to set the volume for.
-        """
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def set_system_volume(self, newVolume: int) -> None:
-        """
-        Set the system level volume
-
-        :param newVolume: The volume to set it to.
+        :param process_name: The process to set the volume for.
         """
         raise NotImplementedError
 
     @abc.abstractmethod
-    def set_process_volume(self, newVolume: int, processName: str) -> None:
+    def set_system_volume(self, new_volume: int) -> None:
         """
-        Set the process volume
+        Set the system level volume.
 
-        :param newVolume: The volume to set it to.
-        :param processName: The process to set the volume for.
+        :param new_volume: The volume to set it to.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def set_process_volume(self, new_volume: int, process_name: str) -> None:
+        """
+        Set the process volume.
+
+        :param new_volume: The volume to set it to.
+        :param process_name: The process to set the volume for.
         """
         raise NotImplementedError
 
     @abc.abstractmethod
     def get_running_processes(self) -> list:
         """
-        Get the names of the processes currently running
+        Get the names of the processes currently running.
         """
         raise NotImplementedError
 
@@ -64,20 +64,20 @@ class IOsConnection(metaclass=abc.ABCMeta):
         """
         Play or pause the media, based on system state.
 
-        Playing state held by OS so we don't need to
+        Playing state held by OS so we don't need to.
         """
         raise NotImplementedError
 
     @abc.abstractmethod
     def skip(self) -> None:
         """
-        Skip to the next media track
+        Skip to the next media track.
         """
         raise NotImplementedError
 
     @abc.abstractmethod
     def reverse(self) -> None:
         """
-        Play the previous media track
+        Play the previous media track.
         """
         raise NotImplementedError

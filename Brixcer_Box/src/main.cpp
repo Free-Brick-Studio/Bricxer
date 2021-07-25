@@ -38,9 +38,17 @@ KnobControl* knobs = (KnobControl*) malloc(sizeof(KnobControl) * KnobCount);
 LedControl* leds = (LedControl*) malloc(sizeof(LedControl) * KnobCount);
 //MediaControl mediaControl(PlayPause, Previous, Next);
 
+// Define array for Serial input
+const int numChars = 32;
+char receivedChars[numChars];
+
+// Define Serial interface
+void receiveData();
+void sendData(int, int, int);
+
+// Define rotary encoder interface
 void buttonClick();
 void knobPinTrigger();
-void sendData(int, int, int);
 
 void setup() {
     // Turn on the serial monitor
@@ -66,7 +74,9 @@ void setup() {
 }
 
 void loop() {
-
+    if (Serial.available() > 0) {
+        receiveData();
+    }
 }
 
 int countDigits(int num) {
@@ -87,8 +97,61 @@ void sendData(int control, int action, int value) {
     Serial.print(str);
 }
 
-void receiveData() {
+void parseData(char* changedValue) {
+    char* index;
 
+    index = strtok(changedValue, ".");
+    int control = atoi(index);
+ 
+    index = strtok(NULL, ".");
+    int action = atoi(index);
+
+    if (action == 0) {
+        index = strtok(NULL, ".");
+        int volume = atoi(index);
+
+        if (volume < 0) {
+            volume = 0;
+        } else if (volume > 100) {
+            volume = 100;
+        }
+
+        leds[control].setVolume(volume);
+    } else if (action == 1) {
+        index = strtok(NULL, "[,");
+        int r = atoi(index);
+
+        index = strtok(NULL, ",");
+        int g = atoi(index);
+
+        index = strtok(NULL, ",]");
+        int b = atoi(index);
+
+        // Serial.print("IColors: "); Serial.print(r); Serial.print(" "); Serial.print(g); Serial.print(" "); Serial.println(b);
+        int colors[3] = {r, g, b};
+        leds[control].setColorMatrix(colors);
+    }
+}
+
+void receiveData() {
+    int i = 0;
+    char data;
+
+    while (Serial.available() > 0) {
+        // read the incoming byte:
+        data = Serial.read();
+
+        receivedChars[i++] = data;
+        if (i >= numChars) {
+            i = numChars - 1;
+        }
+    }
+    receivedChars[i] = '\0';
+
+    // Serial.print("I received: ");
+    // Serial.println(receivedChars);
+
+    parseData(receivedChars);
 }
 
 void buttonClick() {
@@ -104,7 +167,7 @@ void knobPinTrigger() {
     for (int i = 0; i < KnobCount; i++) {
         int button = knobs[i].readKnobValues();
         if (button != 0) {
-            sendData(i, 1, button);
+            sendData(i, 0, button);
         } 
     }
 }

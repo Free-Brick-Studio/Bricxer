@@ -26,7 +26,7 @@ class VolumeMixer(IObserver, Subject):
                 break
 
     @property
-    def applications(self):
+    def applications(self) -> list:
         return self._applications
 
     @applications.setter
@@ -48,8 +48,8 @@ class VolumeMixer(IObserver, Subject):
         :param index: Relation to which knob will control the volume of the application.
         :param name: Name of the application whose volume is being controlled.
         """
-        self._applications[index] = Application(name)
-        self._applications[index].attach(self)
+        self.applications[index] = Application(name)
+        self.applications[index].attach(self)
         self.notify_all((index, ChangedValue.APPLICATION))
 
     def modify_application(self, index, action, value):
@@ -62,4 +62,4 @@ class VolumeMixer(IObserver, Subject):
         :param action: Which property of the application is being modified.
         :param value: The value to set the application property to.
         """
-        self._actions[action](self._applications[index], value)
+        self._actions[action](self.applications[index], value)
