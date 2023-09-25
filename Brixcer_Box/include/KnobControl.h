@@ -4,8 +4,7 @@ class KnobControl {
     int knobPinB;
     int buttonPin;
 
-    int prevPinARead;
-    int prevPinBRead;
+    int state;
 
     public:
         KnobControl(int knobPinA, int knobPinB, int buttonPin);
