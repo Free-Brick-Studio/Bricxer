@@ -39,7 +39,7 @@ LedControl* leds = (LedControl*) malloc(sizeof(LedControl) * KnobCount);
 //MediaControl mediaControl(PlayPause, Previous, Next);
 
 // Define array for Serial input
-const int numChars = 32;
+const int numChars = 33; // 32 chars + 1 for `\0`
 char receivedChars[numChars];
 
 // Define Serial interface
@@ -64,12 +64,10 @@ void setup() {
         KnobControl knob(knobPins[i * 2], knobPins[i * 2 + 1], buttonPins[i]);
         knobs[i] = knob;
 
+        attachInterrupt(buttonPins[i], buttonClick, FALLING);
+
         LedControl led(i);
         leds[i] = led;
-
-        attachInterrupt(buttonPins[i], buttonClick, FALLING);
-        attachInterrupt(knobPins[i * 2], knobPinTrigger, FALLING);
-        attachInterrupt(knobPins[i * 2 + 1], knobPinTrigger, FALLING);
     }
 }
 
@@ -77,6 +75,8 @@ void loop() {
     if (Serial.available() > 0) {
         receiveData();
     }
+
+    knobPinTrigger();
 }
 
 int countDigits(int num) {
@@ -137,14 +137,11 @@ void receiveData() {
     int i = 0;
     char data;
 
-    while (Serial.available() > 0) {
-        // read the incoming byte:
+    // Ignore excess data > numChars
+    while (Serial.available() > 0 && i < numChars) {
         data = Serial.read();
 
         receivedChars[i++] = data;
-        if (i >= numChars) {
-            i = numChars - 1;
-        }
     }
     receivedChars[i] = '\0';
 
@@ -156,18 +153,18 @@ void receiveData() {
 
 void buttonClick() {
     for (int i = 0; i < KnobCount; i++) {
-        int button = knobs[i].readButtonValue();
-        if (button) {
-            sendData(i, 0, button);
+        int value = knobs[i].readButtonValue();
+        if (value) {
+            sendData(i, 0, value);
         }
     }
 }
 
 void knobPinTrigger() {
     for (int i = 0; i < KnobCount; i++) {
-        int button = knobs[i].readKnobValues();
-        if (button != 0) {
-            sendData(i, 0, button);
-        } 
+        int value = knobs[i].readKnobValues();
+        if (value != 0) {
+            sendData(i, 0, value);
+        }
     }
 }
