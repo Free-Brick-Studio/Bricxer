@@ -38,18 +38,41 @@ KnobControl::KnobControl(int knobPinA, int knobPinB, int buttonPin) {
     pinMode(this->knobPinB, INPUT);
     pinMode(this->buttonPin, INPUT_PULLUP);
 
-    this->state = START;
+    state = START;
+    rotationCounter = 0;
 }
 
 int KnobControl::readKnobValues() {
-    // Grab state of input pins.
+    // Read the current value of the pins
     int pinstate = (digitalRead(knobPinB) << 1) | digitalRead(knobPinA);
 
-    // Determine new state from the pins and state table.
+    // Determine the current state from the transition table
     state = transitions[state & 0x7][pinstate];
 
-    // Return emit bits, ie the generated event.
+    // Return the direction of rotation (0: rotation hasn't completed, 1: CW, -1: CCW)
     return state >> 4;
+}
+
+int KnobControl::getNumberOfRotations() {
+    // Get the direction of the latest rotation
+    int direction = this->readKnobValues();
+
+    // Add the rotation to the directional rotation count
+    rotationCounter += direction;
+
+    // If the counting period has ended, send the current rotation count
+    if (millis() - timeOfLastUpdate > ROTATION_COUNT_INTERVAL_MS) {
+        // Get the number of directional rotations
+        int rotations = rotationCounter;
+
+        // Reset rotation counter
+        rotationCounter = 0;
+        timeOfLastUpdate = millis();
+
+        return rotations;
+    }
+
+    return 0;
 }
 
 int KnobControl::readButtonValue() {
