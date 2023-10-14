@@ -39,7 +39,7 @@ LedControl* leds = (LedControl*) malloc(sizeof(LedControl) * KnobCount);
 //MediaControl mediaControl(PlayPause, Previous, Next);
 
 // Define array for Serial input
-const int numChars = 33; // 32 chars + 1 for `\0`
+const int numChars = 33; // 32 chars + 1 for \0
 char receivedChars[numChars];
 
 // Define Serial interface
@@ -162,7 +162,7 @@ void buttonClick() {
 
 void knobPinTrigger() {
     for (int i = 0; i < KnobCount; i++) {
-        int value = knobs[i].readKnobValues();
+        int value = knobs[i].getNumberOfRotations();
         if (value != 0) {
             sendData(i, 0, value);
         }
