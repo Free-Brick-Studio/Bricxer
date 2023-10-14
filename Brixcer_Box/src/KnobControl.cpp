@@ -10,8 +10,8 @@ enum position {
     END_CCW   = 5,
 };
 
-int CW_ROT  = 0x10;
-int CCW_ROT = 0xFFF0;
+int16_t CW_ROT  = 0x10;
+int16_t CCW_ROT = 0xFFF0;
 
 const int transitions[6][4] = {
     // Starting Position
